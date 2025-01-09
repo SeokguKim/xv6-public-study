@@ -215,6 +215,9 @@ fork(void)
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;
+  // by seokgukim begin
+  np->nice = 20;
+  // by seokgukim end
 
   release(&ptable.lock);
 
@@ -532,3 +535,105 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+// by seokgukim begin
+int
+getnice(int pid)
+{
+  struct proc *p;
+
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->pid == pid){
+      int ret = p->nice;
+      release(&ptable.lock);
+      return ret;
+    }
+  }
+  release(&ptable.lock);
+  return -1;
+}
+
+int
+setnice(int pid, int value)
+{
+  struct proc *p;
+
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->pid == pid){
+      p->nice = value;
+      release(&ptable.lock);
+      return 0;
+    }
+  }
+  release(&ptable.lock);
+  return -1;
+}
+
+char*
+getstate(enum procstate state)
+{
+  switch(state){
+  case 0:
+    return "UNUSED";
+  case 1:
+    return "EMBRYO";
+  case 2:
+    return "SLEEPING";
+  case 3:
+    return "RUNNABLE";
+  case 4:
+    return "RUNNING";
+  case 5:
+    return "ZOMBIE";
+  default:
+    break;
+  }
+  return "UNKNOWN";
+}
+
+void
+ps(int pid)
+{
+  struct proc *p;
+
+  if(pid == 0){
+    char clname[16] = {};
+    char clpid[16] = {};
+    char clstate[16] = {};
+    char clpriority[16] = {};
+    padstr(clname, "name", 15);
+    padstr(clpid, "pid", 15);
+    padstr(clstate, "state", 15);
+    padstr(clpriority, "priority", 15);
+    cprintf("%s %s %s %s\n", clname, clpid, clstate, clpriority);
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      char name[16] = {};
+      char pid[16] = {};
+      char state[16] = {};
+      char priority[16] = {};
+      padstr(name, p->name, 15);
+      padnum(pid, p->pid, 15);
+      padstr(state, getstate(p->state), 15);
+      padnum(priority, p->nice, 15);
+      cprintf("%s %s %s %s\n", name, pid, state, priority);
+    }
+  }
+  else{
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->pid == pid){
+        char name[16] = {};
+        char pid[16] = {};
+        char state[16] = {};
+        char priority[16] = {};
+        padstr(name, p->name, 15);
+        padnum(pid, p->pid, 15);
+        padstr(state, getstate(p->state), 15);
+        padnum(priority, p->nice, 15);
+        cprintf("%s %s %s %s\n", name, pid, state, priority);
+      }
+    }  
+  }
+}
+//by seokgukim end

@@ -120,6 +120,11 @@ void            userinit(void);
 int             wait(void);
 void            wakeup(void*);
 void            yield(void);
+// by seokgukim begin
+int             getnice(int);
+int             setnice(int, int);
+void            ps(int);
+//by seokgukim end
 
 // swtch.S
 void            swtch(struct context**, struct context*);
@@ -147,6 +152,10 @@ char*           safestrcpy(char*, const char*, int);
 int             strlen(const char*);
 int             strncmp(const char*, const char*, uint);
 char*           strncpy(char*, const char*, int);
+// by seokgukim begin
+int             padstr(char*, const char*, int);
+int             padnum(char*, int, int);
+// by seokgukim end
 
 // syscall.c
 int             argint(int, int*);

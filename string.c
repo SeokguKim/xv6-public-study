@@ -103,3 +103,45 @@ strlen(const char *s)
   return n;
 }
 
+// by seokgukim begin
+int
+padstr(char *s, const char *t, int n)
+{
+  int len = strlen(t);
+  if (len > n)
+    return -1;
+
+  for(int i = 0; i < len; i++)
+    s[i] = t[i];
+  for(int i=len; i < n; i++)
+    s[i] = ' ';
+  s[n - 1] = 0;
+  return 0;
+}
+
+int
+padnum(char *s, int x, int n)
+{
+
+  int idx = 0;
+  if(x == 0){
+    s[0] = '0';
+    idx++;
+  }
+  else{
+    while(x > 0){
+      s[idx++] = '0' + x % 10;
+      x /= 10;
+    }
+    for(int i = 0; i < idx / 2; i++){
+      char tmp = s[i];
+      s[i] = s[idx - 1 - i];
+      s[idx - 1 - i] = tmp;
+      }
+  }
+  for(int i = idx; i < n; i++)
+    s[i] = ' ';
+  s[n - 1] = 0;
+  return 0;
+}
+//by seokgukim end

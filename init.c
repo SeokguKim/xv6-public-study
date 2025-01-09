@@ -21,6 +21,11 @@ main(void)
 
   for(;;){
     printf(1, "init: starting sh\n");
+    // by seokgukim begin
+    // custiom boot message
+    printf(1, "[seokgukim] invoked by seokgukim\n");
+    printf(1, "[seokgukim] something good may happen!\n");
+    // by seokgukim end
     pid = fork();
     if(pid < 0){
       printf(1, "init: fork failed\n");

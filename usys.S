@@ -29,3 +29,9 @@ SYSCALL(getpid)
 SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
+
+# by seokgukim begin
+SYSCALL(getnice)
+SYSCALL(setnice)
+SYSCALL(ps)
+# by seokgukim end
