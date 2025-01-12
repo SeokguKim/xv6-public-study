@@ -149,6 +149,9 @@ userinit(void)
   acquire(&ptable.lock);
 
   p->state = RUNNABLE;
+  // by seokgukim begin
+  p->nice = 20;
+  // by seokgukim end
 
   release(&ptable.lock);
 }
@@ -216,7 +219,7 @@ fork(void)
 
   np->state = RUNNABLE;
   // by seokgukim begin
-  np->nice = 20;
+  np->nice = curproc->nice;
   // by seokgukim end
 
   release(&ptable.lock);
@@ -609,6 +612,8 @@ ps(int pid)
     padstr(clpriority, "priority", 15);
     cprintf("%s %s %s %s\n", clname, clpid, clstate, clpriority);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->pid <= 0)
+        continue;
       char name[16] = {};
       char pid[16] = {};
       char state[16] = {};
