@@ -611,6 +611,7 @@ ps(int pid)
     padstr(clstate, "state", 15);
     padstr(clpriority, "priority", 15);
     cprintf("%s %s %s %s\n", clname, clpid, clstate, clpriority);
+    cprintf("\n");
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
       if(p->pid <= 0)
         continue;
