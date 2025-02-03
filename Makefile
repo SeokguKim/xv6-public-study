@@ -71,7 +71,10 @@ QEMU = $(shell if which qemu > /dev/null; \
 	echo "***" 1>&2; exit 1)
 endif
 
-CC = $(TOOLPREFIX)gcc
+# by seokgukim begin
+# CC = $(TOOLPREFIX)gcc
+CC = /usr/bin/gcc-11
+# by seokgukim end
 AS = $(TOOLPREFIX)gas
 LD = $(TOOLPREFIX)ld
 OBJCOPY = $(TOOLPREFIX)objcopy
